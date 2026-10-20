@@ -1,62 +1,135 @@
-<!doctype html>
-<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090f27"><title>L'Accademia delle Soglie</title>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#080d1b">
+<title>L’Accademia delle Soglie</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;600;700&display=swap');
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080e22;color:#fff;font-family:'DM Sans',sans-serif}#game{position:relative;height:100dvh;min-height:560px;background:#101a38}#scene{position:absolute;inset:0}canvas{display:block;width:100%;height:100%}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#05091a88,transparent 30%,transparent 55%,#05091acc),radial-gradient(ellipse,transparent 45%,#03071388)}
-header{position:absolute;top:calc(env(safe-area-inset-top) + 13px);left:15px;right:15px;display:flex;align-items:center;gap:10px}.crest{width:40px;height:40px;border:1px solid #e8c98288;border-radius:50%;display:grid;place-items:center;color:#ffedbd;font-size:25px;background:#0a122cbb}h1{font:600 clamp(20px,5vw,27px)/1 'Cormorant Garamond',serif;margin:0}.eyebrow{font-size:9px;letter-spacing:.2em;color:#e8c982;font-weight:700;margin:0 0 5px}.sound{margin-left:auto;width:40px;height:40px;border-radius:50%;border:1px solid #e8c98266;background:#0a122cbb;color:#ffedbd;font-size:19px}
-.quest{position:absolute;top:calc(env(safe-area-inset-top) + 76px);left:14px;right:14px;max-width:400px;margin:auto;padding:14px 16px 11px;border:1px solid #e8c98255;border-radius:14px;background:#0a112cce;backdrop-filter:blur(10px)}h2{font:600 25px/1.02 'Cormorant Garamond',serif;margin:4px 0 7px}.quest p:not(.eyebrow):not(.label){font-size:12px;line-height:1.45;color:#e0e4f4;margin:0 0 11px}.progress{height:3px;background:#ffffff20;border-radius:5px}.progress span{display:block;width:20%;height:100%;background:linear-gradient(90deg,#b58b45,#fff0bd);transition:width .4s}.label{font-size:9px;color:#c9cde0;margin:6px 0 0;letter-spacing:.08em}
-.dialogue{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 103px);left:14px;right:14px;max-width:560px;margin:auto;display:flex;gap:10px;padding:12px;border:1px solid #e8c98255;border-radius:14px;background:#091027d9;backdrop-filter:blur(12px)}.gem{flex:0 0 36px;height:36px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#fff1bd,#c69b4e 60%,#674923);color:#17203c;font-size:22px}.speaker{font-size:10px;color:#e8c982;font-weight:700;margin:0 0 4px}.say{font-size:12px;line-height:1.5;margin:0;color:#f0f1fa}
-nav{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 40px);left:14px;right:14px;max-width:560px;margin:auto;display:grid;grid-template-columns:.85fr 1.4fr .85fr;gap:8px}.btn{min-height:46px;border-radius:12px;padding:9px 7px;font:700 11px 'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}.primary{border:1px solid #f4d995;background:linear-gradient(135deg,#f2d999,#c49a50);color:#1a1c32}.secondary{border:1px solid #e8c98255;background:#091027d9;color:#f4e3b8}.footer{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 12px);left:0;right:0;text-align:center;font-size:9px;letter-spacing:.07em;color:#b7bfd6;margin:0;pointer-events:none}
-.modal{position:absolute;inset:0;z-index:5;background:#05091ad9;display:flex;align-items:center;justify-content:center;padding:15px;backdrop-filter:blur(9px)}.hidden{display:none!important}.panel{position:relative;width:min(560px,100%);max-height:85%;overflow:auto;padding:22px 17px;border:1px solid #e8c98255;border-radius:18px;background:linear-gradient(145deg,#131d3d,#090f26)}.close{position:absolute;right:12px;top:10px;border:1px solid #e8c98255;border-radius:50%;width:34px;height:34px;background:#ffffff0b;color:white;font-size:22px}.intro{font-size:12px;line-height:1.5;color:#c4c8dc}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.grid article{padding:11px;border:1px solid #ffffff18;border-radius:12px;background:#ffffff08}.grid span{font-size:24px}.grid h3{font:600 17px/1.05 'Cormorant Garamond',serif;color:#f4dca4;margin:7px 0 5px}.grid p{font-size:10px;line-height:1.4;color:#c8cde0;margin:0}.toast{position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);padding:11px 15px;border:1px solid #e8c98255;border-radius:12px;background:#0a1230ed;color:#ffedbd;font-size:12px;text-align:center;max-width:80%;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}
-@media(min-width:700px){header{left:28px;right:28px}.quest{top:100px;left:28px;right:auto;margin:0}.dialogue{bottom:88px;left:28px;right:auto;width:min(560px,calc(100% - 56px))}nav{bottom:25px;left:auto;right:28px;width:min(370px,calc(100% - 56px))}.footer{display:none}}
-@media(max-height:700px){.quest{top:75px;padding:10px 13px}.quest h2{font-size:22px}.dialogue{bottom:95px;padding:9px 11px}nav{bottom:38px}.footer{display:none}}
-</style></head>
-<body><main id="game"><div id="scene"></div><div class="shade"></div>
-<header><div class="crest">✦</div><div><p class="eyebrow">UN'AVVENTURA INCANTATA</p><h1>L'Accademia delle Soglie</h1></div><button class="sound" id="sound" aria-label="Audio">♫</button></header>
-<section class="quest"><p class="eyebrow">IL TUO VIAGGIO</p><h2 id="title">La chiamata dell'Accademia</h2><p id="desc">Le torri si accendono al tuo arrivo. Una piccola guida ti aspetta davanti al portale.</p><div class="progress"><span id="bar"></span></div><p class="label" id="label">Prologo · 1 di 5</p></section>
-<section class="dialogue"><div class="gem">✧</div><div><p class="speaker" id="speaker">Pip, guida delle soglie</p><p class="say" id="say">Finalmente sei qui, apprendista. L'Accademia ti ha scelta… e la magia si è svegliata.</p></div></section>
-<nav><button class="btn secondary" id="explore">✧ Esplora</button><button class="btn primary" id="next">Apri il portale　↗</button><button class="btn secondary" id="items">✦ Artefatti</button></nav><p class="footer">Muovi lo sguardo, segui le scintille, scegli la tua magia.</p>
-<div class="modal hidden" id="modal" role="dialog" aria-modal="true"><div class="panel"><button class="close" id="close">×</button><p class="eyebrow">ARCHIVIO DELL'ACCADEMIA</p><h2>I sei artefatti</h2><p class="intro">Ogni oggetto custodisce un potere. Durante le missioni scoprirai come usarli.</p><div class="grid"><article><span>🪄</span><h3>Bacchetta magica</h3><p>Spezzare incantesimi ostili.</p></article><article><span>💍</span><h3>Anello incantato</h3><p>Creare uno scudo protettivo.</p></article><article><span>🧥</span><h3>Mantello invisibile</h3><p>Attraversare luoghi senza essere vista.</p></article><article><span>🪞</span><h3>Specchio delle visioni</h3><p>Rivelare indizi nascosti.</p></article><article><span>🌿</span><h3>Bastone delle radici</h3><p>Aprire passaggi segreti.</p></article><article><span>🏮</span><h3>Lanterna magica</h3><p>Illuminare tracce invisibili.</p></article></div></div></div><div class="toast" id="toast"></div></main>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap');
+:root{--gold:#e7c78b;--cream:#f7ead2;--muted:#b9b9c9}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#070b16;color:var(--cream);font-family:Manrope,system-ui,sans-serif}
+#scene{position:absolute;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 38%,rgba(3,5,14,.55) 100%),linear-gradient(180deg,rgba(4,6,16,.35),transparent 28%,transparent 62%,rgba(4,6,14,.72)}
+.topbar{position:absolute;top:0;left:0;right:0;padding:clamp(16px,3vw,30px);display:flex;justify-content:space-between;align-items:flex-start;gap:16px;pointer-events:none}
+.brand{font:500 clamp(15px,2.2vw,23px) Cinzel,serif;letter-spacing:.15em;text-shadow:0 2px 14px #000}
+.brand small{display:block;font:10px Manrope,sans-serif;letter-spacing:.25em;color:var(--gold);margin-top:7px}
+.chapter{font:11px Manrope,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:#e6d3ac;border:1px solid #e3c68b66;background:#07101c80;padding:10px 13px;border-radius:3px}
+.center-mark{position:absolute;top:15%;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;width:min(90%,680px);transition:opacity 1.2s}
+.center-mark .eyebrow{font-size:10px;letter-spacing:.34em;color:var(--gold);text-transform:uppercase}
+.center-mark h1{font:400 clamp(30px,6vw,62px) Cinzel,serif;line-height:1.08;margin:12px 0;text-shadow:0 3px 30px #000}
+.center-mark p{font:14px/1.6 Manrope,sans-serif;color:#f4e7d4;margin:0 auto;max-width:490px;text-shadow:0 2px 12px #000}
+.bottom{position:absolute;left:0;right:0;bottom:0;padding:18px clamp(16px,3vw,32px) max(20px,env(safe-area-inset-bottom));display:flex;align-items:end;justify-content:space-between;gap:16px;pointer-events:none}
+.story{max-width:470px;background:linear-gradient(100deg,#070c19e8,#070c1999);border-left:2px solid var(--gold);padding:14px 18px;backdrop-filter:blur(10px);pointer-events:auto}
+.story .label{font-size:10px;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}
+.story h2{font:400 21px Cinzel,serif;margin:7px 0}
+.story p{font-size:12px;line-height:1.55;color:#ddd6d0;margin:0}
+.actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;pointer-events:auto}
+button{font:600 11px Manrope,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#f7ead2;background:#101a2ccc;border:1px solid #d8b97888;padding:13px 16px;border-radius:2px;cursor:pointer;backdrop-filter:blur(10px);min-height:44px}
+button.primary{background:linear-gradient(135deg,#d7b475,#8d6738);color:#14101a;border-color:#f0d69a}
+button:active{transform:translateY(1px)}
+.hint{position:absolute;right:20px;top:50%;transform:translateY(-50%);color:#f5e9d3b8;font-size:10px;letter-spacing:.15em;text-transform:uppercase;writing-mode:vertical-rl;pointer-events:none}
+#touchpad{position:absolute;left:18px;bottom:115px;width:116px;height:116px;border:1px solid #d7c18b66;border-radius:50%;background:#07101d55;backdrop-filter:blur(4px);display:none;touch-action:none}
+#stick{position:absolute;left:38px;top:38px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f7dfae,#8b6b43);box-shadow:0 0 18px #e4c17b55}
+#interact{position:absolute;right:18px;bottom:128px;display:none;border-radius:50%;width:62px;height:62px;font-size:10px;padding:0}
+#modal{position:absolute;inset:0;background:#030610c9;backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:24px}
+.modalcard{max-width:540px;width:100%;border:1px solid #d7b97888;background:linear-gradient(145deg,#172139f5,#080d1af5);padding:clamp(22px,5vw,42px);text-align:center;box-shadow:0 20px 100px #000}
+.modalcard .sigil{font-size:34px;color:var(--gold)}
+.modalcard h2{font:400 clamp(26px,5vw,40px) Cinzel,serif;margin:12px 0}
+.modalcard p{font-size:14px;line-height:1.8;color:#e1d9d0}
+.modalcard button{margin-top:12px}
+#loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#080d1b;color:var(--gold);font:12px Cinzel,serif;letter-spacing:.2em;z-index:10}
+@media(max-width:600px){.chapter{font-size:9px;padding:8px}.center-mark{top:17%}.center-mark p{font-size:12px}.bottom{align-items:end}.story{max-width:calc(100% - 2px);padding:11px 13px}.story h2{font-size:18px}.story p{font-size:11px}.actions{max-width:135px}.actions button{padding:11px 10px;font-size:9px}.hint{display:none}#touchpad{display:block}#interact{display:block}.bottom{padding-left:12px;padding-right:12px}.story{max-width:58%}}
+</style>
+</head>
+<body>
+<div id="scene"></div><div class="vignette"></div>
+<div id="loading">L’ACCADEMIA SI STA RISVEGLIANDO…</div>
+<header class="topbar"><div class="brand">L’ACCADEMIA<br>DELLE SOGLIE<small>UN VIAGGIO OLTRE L’ORDINARIO</small></div><div class="chapter" id="chapter">PROLOGO · LA PRIMA SOGLIA</div></header>
+<div class="center-mark" id="intro"><div class="eyebrow">Una storia scritta per te</div><h1>Ogni soglia<br>nasconde una promessa.</h1><p>Tra le montagne, dove la luce incontra la magia, esiste un luogo che compare soltanto a chi ha il coraggio di seguire il cuore.</p></div>
+<div class="hint">ESPLORA · OSSERVA · SCOPRI</div>
+<div class="bottom"><section class="story"><div class="label" id="storylabel">Il richiamo</div><h2 id="storytitle">Davanti all’Accademia</h2><p id="storytext">Il viaggio comincia qui. Avvicinati al sentiero luminoso e scopri cosa si cela oltre il grande portale.</p></section><div class="actions"><button id="moveBtn">Esplora</button><button class="primary" id="continueBtn">Inizia il viaggio&nbsp; →</button></div></div>
+<div id="touchpad"><div id="stick"></div></div><button id="interact">Scopri</button>
+<div id="modal"><div class="modalcard"><div class="sigil">✧</div><h2 id="modaltitle">La prima soglia</h2><p id="modaltext">A volte la magia non consiste nel trovare una porta, ma nel decidere con chi attraversarla.</p><button class="primary" id="closeModal">Continua il viaggio</button></div></div>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-const host=document.querySelector('#scene'), scene=new THREE.Scene();scene.background=new THREE.Color(0x101a38);scene.fog=new THREE.FogExp2(0x101a38,.022);
-const camera=new THREE.PerspectiveCamera(47,1,.1,150);camera.position.set(0,6.8,17);camera.lookAt(0,3.4,0);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;host.appendChild(renderer.domElement);
-const material=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
-const stone=material(0x333e63),lightStone=material(0x697495),dark=material(0x202946),gold=material(0xe8c77d,.3,.5),blue=material(0x243c72),robe=material(0x17264f),skin=material(0xe6b69b),hair=material(0x593628),ground=material(0x182542);
-scene.add(new THREE.HemisphereLight(0xb6cfff,0x20203a,2.2));const moon=new THREE.DirectionalLight(0x9ebaff,2.4);moon.position.set(-7,12,6);scene.add(moon);const warm=new THREE.PointLight(0xffc96e,32,16,2);warm.position.set(0,5,3);scene.add(warm);const fill=new THREE.PointLight(0x718bff,22,25,2);fill.position.set(5,6,-5);scene.add(fill);
-function mesh(g,m,x,y,z,p=scene){let o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;p.add(o);return o}
-function box(w,h,d,m,x,y,z,p=scene){return mesh(new THREE.BoxGeometry(w,h,d),m,x,y,z,p)}
-function cyl(a,b,h,m,x,y,z,p=scene,n=12){return mesh(new THREE.CylinderGeometry(a,b,h,n),m,x,y,z,p)}
-function sph(r,m,x,y,z,p=scene){return mesh(new THREE.SphereGeometry(r,14,10),m,x,y,z,p)}
-function cone(r,h,m,x,y,z,p=scene,n=8){return mesh(new THREE.ConeGeometry(r,h,n),m,x,y,z,p)}
-box(80,.5,80,ground,0,-.35,-12);box(5,.08,23,material(0x414968),0,-.06,4);
-for(let i=0;i<9;i++)box(4.5,.035,.08,material(0x6d7692),0,0,12-i*2.2);
-box(16,6,2.2,stone,0,4.2,-8);box(17,.28,2.5,gold,0,7.25,-7.9);box(12,.4,2.7,lightStone,0,7.55,-7.9);
-for(const x of [-6.4,-3.2,0,3.2,6.4]){box(.25,5.2,.3,lightStone,x,4.2,-6.75);box(1.45,2.2,.16,dark,x,4.3,-6.72);let a=cone(.76,.9,lightStone,x,5.85,-6.7,scene,4);a.rotation.y=Math.PI/4;box(.12,1.7,.12,gold,x,4.25,-6.55)}
-for(const x of [-7.2,7.2]){cyl(.95,.95,9,stone,x,4.25,-7.6);cyl(1.08,1,.28,lightStone,x,8.85,-7.6);cone(1.25,2.5,blue,x,10.15,-7.6);sph(.12,gold,x,11.48,-7.6)}
-box(3.4,8,2.5,stone,0,7.4,-9.3);box(3.7,.3,2.7,gold,0,11.4,-9.25);cone(2.25,3.2,blue,0,13.1,-9.3);sph(.15,gold,0,14.8,-9.3);
-for(let i=0;i<3;i++){box(.75,1.3,.13,dark,0,4.5+i*2,-7.97);let a=cone(.42,.45,lightStone,0,5.28+i*2,-7.97,scene,4);a.rotation.y=Math.PI/4}
-box(2.65,3.5,.32,dark,0,1.65,-6.65);box(2.3,3.15,.12,blue,0,1.65,-6.43);box(.08,3.2,.1,gold,0,1.65,-6.32);sph(.12,gold,.72,1.45,-6.25);sph(.12,gold,-.72,1.45,-6.25);
-for(let i=0;i<5;i++)box(3.2-i*.3,.1,.3,lightStone,0,3.45+i*.13,-6.5+i*.1);
-function tree(x,z,s=1){cyl(.18*s,.3*s,1.7*s,material(0x44334a),x,.65*s,z);[0x263f55,0x304b60,0x3a4668].forEach((c,i)=>cone((1.05-i*.18)*s,1.6*s,material(c),x,(1.3+i*.7)*s,z,scene,7));for(let i=0;i<4;i++)sph(.07*s,gold,x+Math.sin(i*4+x)*.5*s,(2+i%2*.6)*s,z+Math.cos(i*3+z)*.5*s)}
-tree(-7,-1,1.25);tree(7,-1,1.25);tree(-9,-5,1.5);tree(9,-5,1.5);
-const avatar=new THREE.Group();scene.add(avatar);avatar.position.set(-1.1,0,4.5);sph(.58,robe,0,1.2,0,avatar).scale.set(.82,1.25,.58);sph(.39,skin,0,2.25,-.03,avatar);sph(.43,hair,0,2.42,-.05,avatar).scale.set(1,1.05,1);sph(.33,hair,0,2.12,.22,avatar).scale.set(.82,1.3,.75);let cloak=cone(.78,1.45,blue,0,1.15,.03,avatar,8);cloak.rotation.x=Math.PI;cone(.35,.32,gold,0,1.92,0,avatar,8);let wand=cyl(.035,.05,.95,gold,.58,1.55,-.05,avatar,8);wand.rotation.z=-.5;let spark=sph(.11,new THREE.MeshStandardMaterial({color:0xfff0b1,emissive:0xffc24e,emissiveIntensity:3}),.8,2.02,-.05,avatar);let aura=new THREE.PointLight(0xf6d17a,3,4,2);aura.position.set(.8,2,0);avatar.add(aura);
-const fox=new THREE.Group();scene.add(fox);fox.position.set(1.25,0,2.65);sph(.35,material(0xb66c43),0,.5,0,fox).scale.set(1.25,.85,.8);sph(.25,material(0xc98652),.28,.7,-.05,fox);cone(.13,.35,material(0xb66c43),.15,.99,-.08,fox,5).rotation.z=-.15;cone(.13,.35,material(0xb66c43),.42,.99,-.08,fox,5).rotation.z=.15;sph(.045,material(0x15152a),.37,.74,-.26,fox);sph(.045,material(0x15152a),.18,.74,-.26,fox);sph(.045,gold,.29,.64,-.28,fox);let tail=sph(.2,material(0xb66c43),-.38,.55,.05,fox);tail.scale.set(1.5,.7,.7);tail.rotation.z=-.7;sph(.12,material(0xf1d6a4),-.57,.7,.03,fox);fox.add(new THREE.PointLight(0xffbf59,4,4,2));
-const books=[];for(let i=0;i<7;i++){let g=new THREE.Group();scene.add(g);box(.52,.09,.38,material([0x6d345e,0x314f7c,0x8b6537][i%3]),0,0,0,g);box(.04,.1,.39,gold,.25,0,0,g);g.position.set(-5.2+i*1.7,5.1+(i%3)*.65,-3.8-(i%2)*1.5);books.push({g,y:g.position.y,p:i*1.4})}
-const particles=[];for(let i=0;i<90;i++){let m=new THREE.Mesh(new THREE.SphereGeometry(.035,6,5),new THREE.MeshBasicMaterial({color:[0xffe7a0,0x9bc8ff,0xd7baff][i%3],transparent:true,opacity:.7}));m.position.set((Math.random()-.5)*24,Math.random()*13-1,(Math.random()-.5)*23-4);scene.add(m);particles.push({m,y:m.position.y,p:Math.random()*6,s:.3+Math.random()*.8})}
-const ring=mesh(new THREE.TorusGeometry(1.75,.025,8,80),new THREE.MeshBasicMaterial({color:0xe5c477,transparent:true,opacity:.72}),0,.02,-5.95);ring.rotation.x=Math.PI/2;const ring2=mesh(new THREE.TorusGeometry(1.25,.012,6,80),new THREE.MeshBasicMaterial({color:0x9bbcff,transparent:true,opacity:.6}),0,.03,-5.95);ring2.rotation.x=Math.PI/2;
-const steps=[
-['La chiamata dell’Accademia','Le torri si accendono al tuo arrivo. Una piccola guida ti aspetta davanti al portale.','Pip, guida delle soglie','Finalmente sei qui, apprendista. L’Accademia ti ha scelta… e la magia si è svegliata.','Apri il portale','Prologo · 1 di 5'],
-['La porta nascosta','Una serratura antica brilla sotto i simboli dorati. Qualcosa vuole essere ricordato.','Pip, guida delle soglie','Ogni soglia custodisce un segreto. Osserva i simboli: la risposta è più vicina di quanto credi.','Esamina i simboli','Missione I · 2 di 5'],
-['Il mercato delle pozioni','Boccette luminose e ingredienti impossibili riempiono le bancarelle del mercato.','La Maestra delle Pozioni','Una buona pozione non nasce dalla fretta. Scegli con attenzione: ogni ingrediente lascia una traccia.','Scegli gli ingredienti','Missione II · 3 di 5'],
-['Il guardiano del portale','Un’antica creatura si erge davanti a un libro incatenato. La magia vibra nell’aria.','Il Guardiano','Nessuno passa senza dimostrare di saper ascoltare la magia. Quale potere invocherai?','Affronta la prova','Missione III · 4 di 5'],
-['Il Cappello Incantato','La sala si quieta. Un cappello antico fluttua sopra un piedistallo, avvolto da luce dorata.','Il Cappello Incantato','Ho ascoltato le tue scelte e custodito ogni traccia. Ora è il momento di rivelare dove ti porterà il destino.','Scopri il destino','Il finale · 5 di 5']];
-let step=0,explored=false;const $=id=>document.getElementById(id);function update(){let s=steps[Math.min(step,4)];$('title').textContent=s[0];$('desc').textContent=s[1];$('speaker').textContent=s[2];$('say').textContent=s[3];$('next').textContent=step===5?'Rivivi il prologo　↻':s[4]+'　↗';$('label').textContent=step===5?'Fine del prologo dimostrativo':s[5];$('bar').style.width=(step===5?100:(step+1)*20)+'%'}
-function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),2300)}
-$('next').onclick=()=>{if(step===5){step=0;update();return}if(step<4){step++;update();camera.position.set(step===3?1.2:0,step===2?6.3:5.8,step===1?14:16);camera.lookAt(0,3,-1);toast(['','La porta ha riconosciuto la tua presenza ✨','Il mercato delle pozioni si sta risvegliando','Il guardiano attende la tua scelta','Una luce dorata rivela il tuo destino'][step])}else{step=5;$('title').textContent='Il tuo viaggio comincia qui';$('desc').textContent='Buon trentesimo compleanno, amore mio. Il mio regalo è un viaggio da vivere insieme: la mia avventura preferita è quella che vivo con te. ❤️';$('speaker').textContent='Il Cappello Incantato';$('say').textContent='Il mondo è pieno di soglie da attraversare. La più bella sarà quella che aprirete insieme.';$('next').textContent='Rivivi il prologo　↻';$('label').textContent='Fine del prologo dimostrativo';$('bar').style.width='100%'}};
-$('explore').onclick=()=>{explored=!explored;if(explored){$('speaker').textContent='Pip, guida delle soglie';$('say').textContent='Guarda in alto: i libri volanti custodiscono storie dimenticate. Le scintille ti mostreranno la strada.';toast('Hai scoperto una traccia magica ✨')}else update()};
-$('items').onclick=()=>$('modal').classList.remove('hidden');$('close').onclick=()=>$('modal').classList.add('hidden');$('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.add('hidden')};$('sound').onclick=()=>toast('L’audio non è ancora attivo in questa versione.');update();
-const clock=new THREE.Clock();function resize(){let w=host.clientWidth||innerWidth,h=host.clientHeight||innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}addEventListener('resize',resize);resize();
-function animate(){requestAnimationFrame(animate);let t=clock.getElapsedTime();avatar.position.x=-1.1+Math.sin(t*.32)*.12;avatar.rotation.y=Math.sin(t*.26)*.08;spark.material.emissiveIntensity=2.4+Math.sin(t*4)*1.2;fox.position.y=Math.sin(t*2.1)*.07;fox.rotation.y=Math.sin(t*.8)*.13;tail.rotation.z=-.7+Math.sin(t*3)*.18;books.forEach(b=>{b.g.position.y=b.y+Math.sin(t*1.15+b.p)*.18;b.g.rotation.y=Math.sin(t*.5+b.p)*.12;b.g.rotation.z=Math.sin(t*.8+b.p)*.04});particles.forEach(p=>{p.m.position.y=p.y+Math.sin(t*p.s+p.p)*.28;p.m.material.opacity=.35+.4*(.5+.5*Math.sin(t*2+p.p))});ring.rotation.z=t*.08;ring2.rotation.z=-t*.12;warm.intensity=31+Math.sin(t*2)*4;renderer.render(scene,camera)}animate();
-</script></main></body></html>
+const mount=document.getElementById('scene');
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x8798bb);scene.fog=new THREE.FogExp2(0x9aa6c0,.009);
+const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,500);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.65));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;mount.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xbacfff,0x251a25,2.1));
+const sun=new THREE.DirectionalLight(0xffd5a0,3.4);sun.position.set(-28,45,18);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-60;sun.shadow.camera.right=60;sun.shadow.camera.top=60;sun.shadow.camera.bottom=-60;scene.add(sun);
+const moon=new THREE.DirectionalLight(0x7198e8,1.2);moon.position.set(25,20,-35);scene.add(moon);
+function mat(color,rough=.8,metal=0){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal})}
+const stone=mat(0x777b89),stoneLight=mat(0xa9a6a3),roof=mat(0x252b43,.55),dark=mat(0x111827),gold=mat(0xe2bd76,.35,.55),grass=mat(0x243a3a),pathmat=mat(0x777b81),watermat=new THREE.MeshStandardMaterial({color:0x243d62,roughness:.22,metalness:.25,transparent:true,opacity:.82});
+function box(parent,x,y,z,sx,sy,sz,m){const o=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function tower(x,z,h,r=2.6){const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);let body=new THREE.Mesh(new THREE.CylinderGeometry(r*.82,r,h,12),stone);body.position.y=h/2;body.castShadow=true;body.receiveShadow=true;g.add(body);let cap=new THREE.Mesh(new THREE.ConeGeometry(r*1.3,h*.28,12),roof);cap.position.y=h+h*.14;cap.castShadow=true;g.add(cap);for(let yy=3;yy<h-1;yy+=3){for(let i=0;i<8;i++){let a=i*Math.PI/4;let w=box(g,Math.cos(a)*(r+.015),yy,Math.sin(a)*(r+.015),.16,1,.13,dark);w.rotation.y=-a}}return g}
+function window(parent,x,y,z,rot=0){const frame=new THREE.Mesh(new THREE.BoxGeometry(.9,1.6,.22),dark);frame.position.set(x,y,z);frame.rotation.y=rot;parent.add(frame);const glow=new THREE.Mesh(new THREE.PlaneGeometry(.48,1.12),new THREE.MeshBasicMaterial({color:0xffc76f}));glow.position.set(x,y,z+.13);glow.rotation.y=rot;parent.add(glow);const mullion=box(parent,x,y,z+.16,.07,1.15,.05,gold);mullion.rotation.y=rot}
+function makeCastle(){const c=new THREE.Group();c.position.set(0,0,-43);scene.add(c);
+box(c,0,8,0,34,16,19,stone);box(c,0,16.1,0,36,.55,20,stoneLight);
+for(let x of [-14,-7,0,7,14]){box(c,x,8,-9.7,1,14,.4,stoneLight);window(c,x,10,-9.45)}
+for(let x of [-16,16])for(let z of [-8,8])tower(x,z,24,3.2);
+tower(0,-9,34,3.8);tower(-7,1,23,2.6);tower(7,1,23,2.6);
+box(c,0,5,10,13,10,8,stone);box(c,0,10,10,14,.6,9,stoneLight);
+const arch=new THREE.Mesh(new THREE.BoxGeometry(6,7,.8),dark);arch.position.set(0,3.7,14.3);c.add(arch);
+const door=new THREE.Mesh(new THREE.PlaneGeometry(4.8,5.8),new THREE.MeshBasicMaterial({color:0x192a45}));door.position.set(0,3.5,14.76);c.add(door);
+const glow=new THREE.PointLight(0x75a9ff,80,28);glow.position.set(0,4,16);c.add(glow);
+for(let i=0;i<10;i++){let x=(i-4.5)*3.1;box(c,x,18,0,.7,4,.7,stoneLight)}
+}
+makeCastle();
+// Mountain silhouettes
+for(let i=0;i<22;i++){let x=(i-11)*10,z=-85-Math.random()*38,h=18+Math.random()*30;let m=new THREE.Mesh(new THREE.ConeGeometry(8+Math.random()*8,h,5),mat(i%2?0x56617e:0x48546f));m.position.set(x,h/2-3,z);m.rotation.y=Math.random()*2;scene.add(m)}
+// ground, broad approach and lawns
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(260,240),grass);ground.rotation.x=-Math.PI/2;ground.position.set(0,-.3,-42);ground.receiveShadow=true;scene.add(ground);
+const road=new THREE.Mesh(new THREE.PlaneGeometry(11,95),pathmat);road.rotation.x=-Math.PI/2;road.position.set(0,-.16,5);scene.add(road);
+for(let i=0;i<11;i++){let z=30-i*6;let s=box(scene,0,-.05,z,12,.12,1.4,stoneLight);s.material=mat(i%2?0x777a85:0x92909a)}
+// bridge and water channel
+const water=new THREE.Mesh(new THREE.PlaneGeometry(80,10),watermat);water.rotation.x=-Math.PI/2;water.position.set(0,-.08,23);scene.add(water);
+for(let side of [-1,1]){for(let i=0;i<14;i++){const x=side*(7.5+i%3*2.2),z=18-i*4;const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.18,.35,3,7),mat(0x44362f));trunk.position.set(x,1.5,z);trunk.castShadow=true;scene.add(trunk);const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(1.7+Math.random(),1),mat(i%3?0x243c3c:0x354b50));crown.position.set(x,4,z);crown.castShadow=true;scene.add(crown)}}
+// lamps
+const motes=[];for(let i=0;i<120;i++){const mesh=new THREE.Mesh(new THREE.SphereGeometry(.055+Math.random()*.06,6,6),new THREE.MeshBasicMaterial({color:i%4?0xffd58a:0x86c9ff}));mesh.position.set((Math.random()-.5)*46,Math.random()*10,Math.random()*58-22);scene.add(mesh);motes.push({mesh,baseY:mesh.position.y,phase:Math.random()*6.28,speed:.5+Math.random()})}
+for(let z of [17,5,-7])for(let x of [-7,7]){let pole=box(scene,x,2,z,.16,4,.16,dark);let lamp=new THREE.PointLight(0xffc77c,8,12);lamp.position.set(x,3.6,z);scene.add(lamp);const orb=new THREE.Mesh(new THREE.SphereGeometry(.2,8,8),new THREE.MeshBasicMaterial({color:0xffd18a}));orb.position.copy(lamp.position);scene.add(orb)}
+// protagonist: intentionally stylized-real silhouette assembled from layered shapes
+const hero=new THREE.Group();scene.add(hero);hero.position.set(0,0,13);
+const coat=mat(0x222d46,.72),hair=mat(0x241b20),skin=mat(0xd7a17e),leather=mat(0x4b3026),cloth=mat(0x3b4966);
+function sphere(parent,x,y,z,sx,sy,sz,m){let o=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;parent.add(o);return o}
+sphere(hero,0,1.05,0,.32,.48,.22,coat);sphere(hero,0,1.62,0,.2,.24,.2,skin);sphere(hero,0,1.72,-.06,.24,.25,.22,hair);sphere(hero,0,1.4,-.19,.38,.58,.16,coat);
+for(let s of [-1,1]){sphere(hero,s*.23,1.12,0,.1,.38,.12,cloth);sphere(hero,s*.12,.42,.02,.12,.36,.13,dark)}
+const cape=sphere(hero,0,1.1,-.22,.36,.58,.08,coat);cape.rotation.x=-.15;
+const pack=sphere(hero,0,1.05,.16,.23,.29,.14,leather);
+// floating camera companion, a small amber guide orb
+const guide=new THREE.Group();scene.add(guide);const orb=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),new THREE.MeshBasicMaterial({color:0xffcf7d}));guide.add(orb);const halo=new THREE.Mesh(new THREE.TorusGeometry(.34,.018,6,32),new THREE.MeshBasicMaterial({color:0xffe3a8}));halo.rotation.x=Math.PI/2;guide.add(halo);const guideLight=new THREE.PointLight(0xffbd68,4,9);guide.add(guideLight);
+let mode=0,progress=0,moveX=0,moveZ=0,dragging=false,lastX=0,lastY=0,yaw=0,camYaw=0,camPitch=0.15,cinematicStart=performance.now(),lastTime=0;
+const storyData=[
+{chapter:'PROLOGO · LA PRIMA SOGLIA',label:'Il richiamo',title:'Davanti all’Accademia',text:'Il viaggio comincia qui. Avvicinati al sentiero luminoso e scopri cosa si cela oltre il grande portale.',modal:'Ogni grande storia comincia con un passo. Il tuo ti ha condotta fin qui.'},
+{chapter:'CAPITOLO I · IL GIARDINO SOSPESO',label:'Il giardino sospeso',title:'Le luci che ricordano',text:'Tra gli alberi antichi, piccole luci custodiscono ricordi. Segui quella dorata: ha qualcosa da mostrarti.',modal:'Ci sono incontri che trasformano un luogo in casa. E momenti piccoli che diventano ricordi immensi.'},
+{chapter:'CAPITOLO II · LA BIBLIOTECA VIVENTE',label:'La conoscenza',title:'Il libro senza nome',text:'Nella biblioteca, un libro attende chi sa ascoltare. Tocca “Scopri” per rivelare il suo segreto.',modal:'Le pagine più belle non raccontano ciò che è stato, ma tutto quello che possiamo ancora scrivere insieme.'},
+{chapter:'CAPITOLO III · LA SOGLIA DEL CUORE',label:'La promessa',title:'Oltre l’ultima porta',text:'L’ultima soglia non si apre con una chiave. Si apre con una promessa: continuare a scegliere l’avventura, ogni giorno.',modal:'Trent’anni di te, e ancora così tante meraviglie da scoprire. Buon compleanno, amore mio. Il viaggio più bello è quello che ci aspetta insieme.'}
+];
+function updateStory(){const d=storyData[progress];document.getElementById('chapter').textContent=d.chapter;document.getElementById('storylabel').textContent=d.label;document.getElementById('storytitle').textContent=d.title;document.getElementById('storytext').textContent=d.text;document.getElementById('modaltitle').textContent=d.title;document.getElementById('modaltext').textContent=d.modal;document.getElementById('continueBtn').textContent=progress===0?'Inizia il viaggio →':progress===3?'Rivivi il finale ↻':'Continua →';document.getElementById('intro').style.opacity=progress===0?'1':'0';}
+function openModal(){document.getElementById('modal').style.display='flex'}
+document.getElementById('closeModal').onclick=()=>{document.getElementById('modal').style.display='none';if(progress<3){progress++;updateStory();cinematicStart=performance.now();mode=1}else{progress=0;updateStory();hero.position.set(0,0,13);mode=0}};
+document.getElementById('continueBtn').onclick=()=>{if(progress===0){mode=1;document.getElementById('intro').style.opacity='0';document.getElementById('storytext').textContent='Usa il joystick per muoverti, trascina lo schermo per guardarti intorno e premi Scopri quando sei vicino a una luce.'}else openModal()};
+document.getElementById('moveBtn').onclick=()=>{mode=1;document.getElementById('intro').style.opacity='0';hero.position.z-=3;};
+document.getElementById('interact').onclick=()=>{openModal()};
+const pad=document.getElementById('touchpad'),stick=document.getElementById('stick');let padPointer=null;
+pad.addEventListener('pointerdown',e=>{padPointer=e.pointerId;pad.setPointerCapture(e.pointerId);setStick(e);});
+pad.addEventListener('pointermove',e=>{if(padPointer===e.pointerId)setStick(e)});
+function setStick(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;const len=Math.hypot(dx,dy),max=37;if(len>max){dx=dx/len*max;dy=dy/len*max}stick.style.transform=`translate(${dx}px,${dy}px)`;moveX=dx/max;moveZ=dy/max}
+function resetStick(){padPointer=null;moveX=0;moveZ=0;stick.style.transform='translate(0,0)'}pad.addEventListener('pointerup',resetStick);pad.addEventListener('pointercancel',resetStick);
+renderer.domElement.addEventListener('pointerdown',e=>{if(e.clientX>140){dragging=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId)}});
+renderer.domElement.addEventListener('pointermove',e=>{if(dragging){camYaw-=(e.clientX-lastX)*.004;camPitch=THREE.MathUtils.clamp(camPitch+(e.clientY-lastY)*.002,-.15,.65);lastX=e.clientX;lastY=e.clientY}});
+renderer.domElement.addEventListener('pointerup',()=>dragging=false);renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.65))}addEventListener('resize',resize);
+function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-lastTime)/1000||.016,.05);lastTime=t;const time=t*.001;
+motes.forEach(o=>{o.mesh.position.y=o.baseY+Math.sin(time*o.speed+o.phase)*.5;o.mesh.position.x+=Math.sin(time*.2+o.phase)*.001});
+guide.position.set(hero.position.x+Math.sin(time*1.3)*1.15,2.5+Math.sin(time*2)*.22,hero.position.z-2+Math.cos(time)*.5);
+if(mode===1){const forward=moveZ;hero.position.x+=moveX*dt*4.5;hero.position.z+=forward*dt*5.5;hero.position.x=THREE.MathUtils.clamp(hero.position.x,-11,11);hero.position.z=THREE.MathUtils.clamp(hero.position.z,-15,24);if(Math.abs(moveX)+Math.abs(moveZ)>.1)hero.rotation.y=Math.atan2(moveX,-moveZ)}
+const target=new THREE.Vector3(hero.position.x,1.2,hero.position.z);const dist=progress===0?10:8.5;const angle=camYaw;const desired=new THREE.Vector3(target.x+Math.sin(angle)*dist,hero.position.y+5.2+camPitch*8,hero.position.z+Math.cos(angle)*dist);camera.position.lerp(desired,.045);camera.lookAt(target.x,target.y+1.8,target.z-5);
+if(mode===0){camera.position.lerp(new THREE.Vector3(22,18,28),.012);camera.lookAt(0,11,-34)}
+renderer.render(scene,camera)}
+requestAnimationFrame(animate);
+document.getElementById('loading').style.display='none';
+</script>
+</body></html>
